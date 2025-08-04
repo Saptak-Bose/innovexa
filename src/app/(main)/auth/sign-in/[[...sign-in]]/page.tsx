@@ -1,0 +1,196 @@
+"use client";
+
+import { useSignIn } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  EmailCodeFactor,
+  OAuthStrategy,
+  SignInFirstFactor,
+} from "@clerk/types";
+import GlobalCard from "@/components/global/global-card";
+import { Label } from "@/components/ui/label";
+import OtpInput from "@/components/global/otp-input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Loader from "@/components/global/loader";
+import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
+import Link from "next/link";
+
+type Props = object;
+
+export default function SignInPage({}: Props) {
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const [verifying, setVerifying] = useState(false);
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!isLoaded && !signIn) return null;
+
+    try {
+      const { supportedFirstFactors } = await signIn.create({
+        identifier: email,
+      });
+
+      const isEmailCodeFactor = (
+        factor: SignInFirstFactor
+      ): factor is EmailCodeFactor => factor.strategy === "email_code";
+      const emailCodeFactor = supportedFirstFactors?.find(isEmailCodeFactor);
+
+      if (emailCodeFactor) {
+        const { emailAddressId } = emailCodeFactor;
+
+        await signIn.prepareFirstFactor({
+          strategy: "email_code",
+          emailAddressId,
+        });
+
+        setVerifying(true);
+      }
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+    }
+  };
+
+  const handleVerification = async (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!isLoaded && !signIn) return null;
+
+    try {
+      const signInAttempt = await signIn.attemptFirstFactor({
+        strategy: "email_code",
+        code,
+      });
+
+      if (signInAttempt.status === "complete") {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.push("/auth/callback");
+      } else {
+        console.error("Verification failed:", signInAttempt);
+      }
+    } catch (error) {
+      console.error("Error during sign-in verification:", error);
+    }
+  };
+
+  const signInWith = (strategy: OAuthStrategy) => {
+    return signIn!
+      .authenticateWithRedirect({
+        strategy,
+        redirectUrl: "/auth/sign-in/sso-callback",
+        redirectUrlComplete: "/auth/callback",
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log("Error during sign-in:", error);
+      });
+  };
+
+  return (
+    <main className="flex items-center justify-center min-h-screen w-full">
+      {verifying ? (
+        <GlobalCard
+          title="Enter Your Verification Code"
+          description="For added security, we’ve sent a one-time 6-digit code to your email. Please input it below to complete your sign-in. This ensures it’s really you and protects your Innovexa account. Can’t find the code? Check your spam folder. Once verified, you’ll be instantly signed in and ready to customize your Macropad!"
+        >
+          <form onSubmit={handleVerification}>
+            <Label
+              htmlFor="clerk-captcha"
+              className="flex flex-col gap-1 text-secondary-foreground items-start mx-2"
+            >
+              <span className="font-semibold ml-0.5 mb-1">
+                Enter the 6-digit code
+              </span>
+              <OtpInput otp={code} setOtp={setCode} />
+            </Label>
+            <Button
+              className="flex items-center justify-center w-[98%] mt-2 mb-3 mx-auto font-bold text-background"
+              type="submit"
+            >
+              Verify →
+            </Button>
+          </form>
+        </GlobalCard>
+      ) : (
+        <GlobalCard
+          title="Welcome Back to Innovexa"
+          description="Sign in to your Innovexa account to pick up right where you left off. Access your saved Macropad configurations, manage subscriptions, and explore new customization options. Enter your email or sign in via Google or Apple for instant access. Let’s get you back to creating the perfect layout!"
+        >
+          <form onSubmit={handleSubmit}>
+            <Label
+              htmlFor="email"
+              className="flex flex-col gap-1 text-secondary-foreground items-start mx-2"
+            >
+              <span className="font-semibold ml-0.5 mb-1">Email Address</span>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
+                placeholder="Enter your email address..."
+                className="bg-input border border-border text-foreground placeholder-muted-foreground rounded-md p-2 focus:outline-none focus-visible:ring focus-visible:ring-ring focus-visible:border-primary"
+              />
+            </Label>
+            <div id="clerk-captcha" />
+            <Button
+              className="flex items-center justify-center w-[98%] mt-2 mb-3 mx-auto font-bold text-background"
+              type="submit"
+            >
+              <Loader loading={verifying}>Next →</Loader>
+            </Button>
+          </form>
+          <div className="flex items-center justify-center text-muted-foreground">
+            <Separator />
+            <h1 className="text-sm flex items-center justify-center">OR</h1>
+            <Separator />
+          </div>
+          <div className="flex flex-col items-center my-1">
+            <Button
+              onClick={() => signInWith("oauth_google")}
+              className="flex items-center justify-center mx-auto font-bold text-background w-[50%] my-1"
+            >
+              <Image
+                src="/Google.svg"
+                height={20}
+                width={20}
+                alt="Google Icon"
+              />
+              Sign In with Google
+            </Button>
+            <Button
+              onClick={() => signInWith("oauth_apple")}
+              className="flex items-center justify-center mx-auto font-bold text-background w-[50%] my-1"
+            >
+              <Image src="/Apple.svg" height={20} width={20} alt="Apple Icon" />
+              Sign In with Apple
+            </Button>
+          </div>
+          <div className="flex items-center justify-center text-muted-foreground">
+            <Separator />
+            <h1 className="text-sm flex items-center justify-center">OR</h1>
+            <Separator />
+          </div>
+          <span className="flex items-center justify-center text-muted-foreground text-sm">
+            New to Innovexa?
+            <Link
+              className="ml-0.5 text-xs hover:underline text-secondary-foreground font-semibold"
+              href="/auth/sign-up"
+            >
+              SIGN UP
+            </Link>
+          </span>
+        </GlobalCard>
+      )}
+    </main>
+  );
+}
