@@ -1,5 +1,11 @@
+import Navbar from "@/components/global/navbar";
+
 type Props = object;
 
 export default function LandingPage({}: Props) {
-  return <div>LandingPage</div>;
+  return (
+    <main>
+      <Navbar />
+    </main>
+  );
 }

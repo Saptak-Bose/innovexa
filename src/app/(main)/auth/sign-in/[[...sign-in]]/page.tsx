@@ -23,11 +23,13 @@ type Props = object;
 export default function SignInPage({}: Props) {
   const { isLoaded, signIn, setActive } = useSignIn();
   const [verifying, setVerifying] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!isLoaded && !signIn) return null;
@@ -51,6 +53,7 @@ export default function SignInPage({}: Props) {
         });
 
         setVerifying(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error during sign-in:", error);
@@ -58,6 +61,7 @@ export default function SignInPage({}: Props) {
   };
 
   const handleVerification = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!isLoaded && !signIn) return null;
@@ -70,6 +74,7 @@ export default function SignInPage({}: Props) {
 
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
+        setLoading(false);
         router.push("/auth/callback");
       } else {
         console.error("Verification failed:", signInAttempt);
@@ -115,7 +120,7 @@ export default function SignInPage({}: Props) {
               className="flex items-center justify-center w-[98%] mt-2 mb-3 mx-auto font-bold text-background"
               type="submit"
             >
-              Verify →
+              <Loader loading={loading}>Verify →</Loader>
             </Button>
           </form>
         </GlobalCard>
@@ -146,7 +151,7 @@ export default function SignInPage({}: Props) {
               className="flex items-center justify-center w-[98%] mt-2 mb-3 mx-auto font-bold text-background"
               type="submit"
             >
-              <Loader loading={verifying}>Next →</Loader>
+              <Loader loading={loading}>Next →</Loader>
             </Button>
           </form>
           <div className="flex items-center justify-center text-muted-foreground">
@@ -154,7 +159,7 @@ export default function SignInPage({}: Props) {
             <h1 className="text-sm flex items-center justify-center">OR</h1>
             <Separator />
           </div>
-          <div className="flex flex-col items-center my-1">
+          <div className="flex flex-col items-center my-1" id="clerk-captcha">
             <Button
               onClick={() => signInWith("oauth_google")}
               className="flex items-center justify-center mx-auto font-bold text-background w-[50%] my-1"

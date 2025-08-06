@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/providers/theme";
 import { ClerkProvider } from "@clerk/nextjs";
 import ReactQueryProvider from "@/providers/react-query";
 import { Toaster } from "@/components/ui/sonner";
+import { dark } from "@clerk/themes";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default function RootLayout({
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       afterSignOutUrl="/"
+      appearance={{ baseTheme: dark }}
     >
       <html lang="en" suppressHydrationWarning>
         <head>

@@ -1,20 +1,27 @@
 import { onAuthenticateUser } from "@/actions/user";
+import { db } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 type Props = object;
 
 export default async function AuthCallbackPage({}: Props) {
-  const auth = await onAuthenticateUser();
+  const user = (await onAuthenticateUser()).user;
+  let newUser;
+  const authUser = await currentUser();
 
-  if (auth.status === 200 || auth.status === 201)
-    return redirect("/profile");
+  if (!user) {
+    newUser = await db.user.create({
+      data: {
+        clerkId: authUser!.id,
+        email: authUser!.emailAddresses[0].emailAddress,
+        name: authUser!.fullName || "",
+        image: authUser!.imageUrl || "",
+      },
+    });
+  } else {
+    newUser = user;
+  }
 
-  if (
-    auth.status === 400 ||
-    auth.status === 404 ||
-    auth.status === 403 ||
-    auth.status === 401 ||
-    auth.status === 500
-  )
-    return redirect("/");
+  return redirect(`/${newUser.id}`);
 }

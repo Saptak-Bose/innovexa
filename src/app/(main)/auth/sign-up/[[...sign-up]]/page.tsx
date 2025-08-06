@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { useSignIn, useSignUp } from "@clerk/nextjs";
+import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { OAuthStrategy } from "@clerk/types";
@@ -18,13 +18,14 @@ type Props = object;
 
 export default function SignUpPage({}: Props) {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const { signIn } = useSignIn();
   const [verifying, setVerifying] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!isLoaded && !signUp) return null;
@@ -36,12 +37,14 @@ export default function SignUpPage({}: Props) {
       await signUp.prepareEmailAddressVerification();
 
       setVerifying(true);
+      setLoading(false);
     } catch (error) {
       console.error("Error during sign-up:", error);
     }
   };
 
   const handleVerification = async (e: FormEvent) => {
+    setLoading(true);
     e.preventDefault();
 
     if (!isLoaded && !signUp) return null;
@@ -53,6 +56,7 @@ export default function SignUpPage({}: Props) {
 
       if (signUpAttempt.status === "complete") {
         await setActive({ session: signUpAttempt.createdSessionId });
+        setLoading(false);
         router.push("/auth/callback");
       } else {
         console.error("Verification failed:", signUpAttempt);
@@ -62,18 +66,18 @@ export default function SignUpPage({}: Props) {
     }
   };
 
-  const signInWith = (strategy: OAuthStrategy) => {
-    return signIn!
+  const signUpWith = (strategy: OAuthStrategy) => {
+    return signUp!
       .authenticateWithRedirect({
         strategy,
-        redirectUrl: "/auth/sign-in/sso-callback",
+        redirectUrl: "/auth/sign-up/sso-callback",
         redirectUrlComplete: "/auth/callback",
       })
       .then((res) => {
         console.log(res);
       })
       .catch((error) => {
-        console.log("Error during sign-in:", error);
+        console.log("Error during sign-up:", error);
       });
   };
 
@@ -98,7 +102,7 @@ export default function SignUpPage({}: Props) {
               className="flex items-center justify-center w-[98%] mt-2 mb-3 mx-auto font-bold text-background"
               type="submit"
             >
-              Verify →
+              <Loader loading={loading}>Verify →</Loader>
             </Button>
           </form>
         </GlobalCard>
@@ -129,7 +133,7 @@ export default function SignUpPage({}: Props) {
               className="flex items-center justify-center w-[98%] mt-2 mb-3 mx-auto font-bold text-background"
               type="submit"
             >
-              <Loader loading={verifying}>Next →</Loader>
+              <Loader loading={loading}>Next →</Loader>
             </Button>
           </form>
           <div className="flex items-center justify-center text-muted-foreground">
@@ -137,9 +141,9 @@ export default function SignUpPage({}: Props) {
             <h1 className="text-sm flex items-center justify-center">OR</h1>
             <Separator />
           </div>
-          <div className="flex flex-col items-center my-1">
+          <div className="flex flex-col items-center my-1" id="clerk-captcha">
             <Button
-              onClick={() => signInWith("oauth_google")}
+              onClick={() => signUpWith("oauth_google")}
               className="flex items-center justify-center mx-auto font-bold text-background w-[50%] my-1"
             >
               <Image
@@ -151,7 +155,7 @@ export default function SignUpPage({}: Props) {
               Sign Up with Google
             </Button>
             <Button
-              onClick={() => signInWith("oauth_apple")}
+              onClick={() => signUpWith("oauth_apple")}
               className="flex items-center justify-center mx-auto font-bold text-background w-[50%] my-1"
             >
               <Image src="/Apple.svg" height={20} width={20} alt="Apple Icon" />
