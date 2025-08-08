@@ -25,8 +25,8 @@ export const onAuthenticateUser = async () => {
       data: {
         clerkId: user.id,
         email: user.emailAddresses[0].emailAddress,
-        name: user.fullName ? user.fullName : "",
-        image: user.imageUrl ? user.imageUrl : "",
+        name: user.fullName || "",
+        image: user.imageUrl || "",
       },
     });
 

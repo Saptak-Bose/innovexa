@@ -2,7 +2,7 @@ type Props = object;
 
 export default function LoadingPage({}: Props) {
   return (
-    <div className="w-full flex justify-center items-center ">
+    <div className="w-full flex justify-center items-center h-screen ">
       <div role="status">
         <svg
           aria-hidden="true"

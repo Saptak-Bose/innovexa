@@ -16,10 +16,10 @@ enum Role {
 
 model User {
   id        String   @id @unique @default(uuid())
-  email     String   
+  email     String
   clerkId   String   @unique
-  name      String?
-  image     String?
+  name      String
+  image     String
   role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -9,7 +9,12 @@ type Props = {
 
 export default function Loader({ children, loading, className }: Props) {
   return loading ? (
-    <div className={cn("w-full flex justify-center items-center", className)}>
+    <div
+      className={cn(
+        "w-full flex justify-center items-center h-screen",
+        className
+      )}
+    >
       <div role="status">
         <svg
           aria-hidden="true"

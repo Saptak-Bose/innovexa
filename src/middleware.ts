@@ -8,6 +8,9 @@ import { NextRequest, NextResponse } from "next/server";
 const isPublicRoute = createRouteMatcher([
   "/",
   "/landing",
+  "/about",
+  "/privacy",
+  "/enterprise",
   "/auth/sign-in(.*)",
   "/auth/sign-up(.*)",
 ]);
@@ -15,8 +18,11 @@ const isPublicRoute = createRouteMatcher([
 const afterAuth = async (auth: ClerkMiddlewareAuth, req: NextRequest) => {
   const url = req.nextUrl;
 
-  if (url.pathname === "/sign-in" || url.pathname === "/sign-up")
+  if (url.pathname === "/sign-in")
     return NextResponse.redirect(new URL("/auth/sign-in", req.url));
+
+  if (url.pathname === "/sign-up")
+    return NextResponse.redirect(new URL("/auth/sign-up", req.url));
 
   if (
     url.pathname === "/" ||
