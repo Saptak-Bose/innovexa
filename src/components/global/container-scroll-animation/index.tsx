@@ -3,6 +3,7 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
 export default function ContainerScroll({
   titleComponent,
@@ -82,9 +83,12 @@ export const Card = ({
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="max-w-5xl -mt-12 mx-auto h-[30rem] md:h-[40rem] w-full p-6 bg-[#222222] rounded-[30px] shadow-2xl"
+      className={cn(
+        "max-w-5xl -mt-12 mx-auto h-[30rem] md:h-[40rem] p-6 bg-[#222222] rounded-[30px] shadow-2xl",
+        scale === 0 ? "w-[1920px]" : "w-full"
+      )}
     >
-      <div className="bg-gray-100 h-full w-full rounded-2xl gap-4 overflow-hidden p-4 transition-all">
+      <div className="bg-secondary-foreground h-full w-full rounded-2xl gap-4 overflow-hidden p-4 transition-all">
         <Image
           src="/temp-banner.png"
           fill

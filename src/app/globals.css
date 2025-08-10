@@ -76,6 +76,9 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.795 0.184 86.047);
+
+  --animation-duration: 40s;
+  --animation-direction: forwards;
 }
 
 .dark {
@@ -138,3 +141,127 @@
     rgba(194, 254, 113, 1) 90.1%
   );
 }
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+@keyframes moveHorizontal {
+  0% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(50%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+}
+
+@keyframes moveInCircle {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moveVertical {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@layer utilities {
+  .animate-scroll {
+    animation: scroll var(--animation-duration, 40s)
+      var(--animation-direction, forwards) linear infinite;
+  }
+
+  .animate-spotlight {
+    animation: spotlight 2s ease 0.75s 1 forwards;
+  }
+
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+
+  .animate-first {
+    animation: moveVertical 30s ease infinite;
+  }
+  .animate-second {
+    animation: moveInCircle 20s reverse infinite;
+  }
+  .animate-third {
+    animation: moveInCircle 40s linear infinite;
+  }
+  .animate-fourth {
+    animation: moveHorizontal 40s ease infinite;
+  }
+  .animate-fifth {
+    animation: moveInCircle 20s ease infinite;
+  }
+
+  .radius-lg {
+    border-radius: var(--radius);
+  }
+  .radius-md {
+    border-radius: calc(var(--radius) - 2px);
+  }
+  .radius-sm {
+    border-radius: calc(var(--radius) - 4px);
+  }
+}
+
+/* ==========================================================================
+   Usage notes:
+   - To change the scroll animation duration or direction per element:
+       <div style="--animation-duration:20s; --animation-direction:reverse" class="animate-scroll">...</div>
+   - Tailwind will still generate your configured .animate-* utilities; these CSS fallbacks are for convenience.
+   - I didn't modify any of your color tokens — only added animation variables and the keyframes/utilities.
+   ========================================================================== */

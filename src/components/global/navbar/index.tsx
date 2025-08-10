@@ -43,7 +43,10 @@ export default async function Navbar({}: Props) {
         </ul>
       </nav>
       <aside className="flex items-center gap-4">
-        <Link href="/auth/sign-up" className="focus:outline-none">
+        <Link
+          href={user ? `/${user.id}` : "/auth/sign-up"}
+          className="focus:outline-none"
+        >
           <Button className="relative inline-flex h-10 overflow-hidden rounded-full p-[3px] focus:ring-2 focus:ring-offset-2 focus:ring-ring focus:ring-offset-ring/[8%]">
             <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#FFF2CB_0%,#EFB100_50%,#FFF2CB_100%)]" />
             <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-background px-3 py-1 text-sm font-semibold text-secondary-foreground backdrop-blur-3xl">
