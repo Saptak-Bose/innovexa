@@ -2,42 +2,67 @@
 
 import { db } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export const onAuthenticateUser = async () => {
+export const createUser = async () => {
   try {
-    const user = await currentUser();
+    const authUser = await currentUser();
 
-    if (!user) return { status: 403 };
+    if (!authUser) return redirect("/auth/sign-in");
 
-    const userExists = await db.user.findUnique({
-      where: {
-        clerkId: user.id,
-      },
-    });
-
-    if (userExists)
-      return {
-        status: 200,
-        user: userExists,
-      };
-
-    const newUser = await db.user.create({
+    await db.user.create({
       data: {
-        clerkId: user.id,
-        email: user.emailAddresses[0].emailAddress,
-        name: user.fullName || "",
-        image: user.imageUrl || "",
+        clerkId: authUser.id,
+        email: authUser.emailAddresses[0].emailAddress,
+        name: authUser.fullName || "",
+        image: authUser.imageUrl || "",
       },
     });
 
-    if (newUser)
+    return { status: 201 };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      status: 500,
+      error,
+    };
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const authUser = await currentUser();
+
+    if (!authUser)
       return {
-        status: 201,
-        user: newUser,
+        status: 404,
+        user: null,
       };
 
-    return { status: 400 };
+    const user = await db.user.findUnique({
+      where: {
+        clerkId: authUser.id,
+      },
+      select: {
+        email: true,
+        name: true,
+        image: true,
+        plan: true,
+        role: true,
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return {
+      status: 200,
+      user,
+    };
   } catch (error) {
+    console.error(error);
+
     return {
       status: 500,
       error,

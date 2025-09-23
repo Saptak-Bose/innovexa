@@ -18,6 +18,7 @@ export default function HeroParallax({
     title: string;
     link: string;
     thumbnail: string;
+    key: number;
   }[];
 }) {
   const firstRow = products.slice(0, 5);
@@ -75,7 +76,7 @@ export default function HeroParallax({
             <ProductCard
               product={product}
               translate={translateX}
-              key={product.title}
+              key={product.key}
             />
           ))}
         </motion.div>
@@ -84,7 +85,7 @@ export default function HeroParallax({
             <ProductCard
               product={product}
               translate={translateXReverse}
-              key={product.title}
+              key={product.key}
             />
           ))}
         </motion.div>
@@ -93,7 +94,7 @@ export default function HeroParallax({
             <ProductCard
               product={product}
               translate={translateX}
-              key={product.title}
+              key={product.key}
             />
           ))}
         </motion.div>
@@ -106,13 +107,24 @@ export const Header = () => {
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0">
       <h1 className="text-2xl md:text-7xl font-bold text-secondary-foreground">
-        Make Time Tap — <br /> Your Hands, Reprogrammed.
+        MarX — <br /> One Tap. Infinite Workflows.
       </h1>
       <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
-        Design studio-grade Macropads that automate your flow: assign macros,
-        chain shortcuts and trigger whole workflows with a single press. Sleek
-        hardware, pro switches, and companion software let you create physical
-        shortcuts that actually feel like magic.
+        Imagine compressing an hour of tedious, repetitive clicks into a single
+        tap. MarX makes that possible. As Innovexa’s flagship Macropad, MarX
+        pairs studio-grade mechanical switches with hot-swappable sockets and
+        resilient, low-latency firmware so workflows feel immediate and
+        reliable. The onboard macro engine supports chained actions, conditional
+        jumps and timing controls — build complex workflows without code, then
+        assign them to any key.
+        <br /> <br />
+        But MarX isn’t just hardware. It’s part of a cloud-first ecosystem: save
+        and share profiles, sync layouts across devices, and receive firmware
+        updates that improve the experience over time. Early adopters unlock AI
+        macro suggestions, exclusive keycap drops, and rapid support — a
+        membership that grows with your workflows. MarX is the first device from
+        Innovexa; expect more purpose-built tools to follow, all designed to
+        reclaim your time and make focused work effortless.
       </p>
     </div>
   );

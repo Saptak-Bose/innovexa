@@ -1,10 +1,10 @@
-import { onAuthenticateUser } from "@/actions/user";
+import { getUser } from "@/actions/user";
 import { redirect } from "next/navigation";
 
 type Props = object;
 
 export default async function UserIdPage({}: Props) {
-  const auth = await onAuthenticateUser();
+  const user = await getUser();
 
-  return redirect(`/${auth.user?.id}/profile`);
+  return redirect(`/${user.user?.id}/profile`);
 }

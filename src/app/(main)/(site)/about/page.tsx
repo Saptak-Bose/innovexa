@@ -1,5 +1,7 @@
 type Props = {};
 
 export default function AboutPage({}: Props) {
-  return <div>AboutPage</div>;
+  return (
+    <div>About Page</div>
+  );
 }

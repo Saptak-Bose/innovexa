@@ -1,27 +1,19 @@
-import { onAuthenticateUser } from "@/actions/user";
-import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
+import { createUser, getUser } from "@/actions/user";
 import { redirect } from "next/navigation";
 
 type Props = object;
 
 export default async function AuthCallbackPage({}: Props) {
-  const user = (await onAuthenticateUser()).user;
-  let newUser;
-  const authUser = await currentUser();
+  const presentUser = await getUser();
+  let redirectUserId;
 
-  if (!user) {
-    newUser = await db.user.create({
-      data: {
-        clerkId: authUser!.id,
-        email: authUser!.emailAddresses[0].emailAddress,
-        name: authUser!.fullName || "",
-        image: authUser!.imageUrl || "",
-      },
-    });
+  if (presentUser.user) {
+    redirectUserId = presentUser.user.id;
   } else {
-    newUser = user;
+    await createUser();
+    const newUser = await getUser();
+    redirectUserId = newUser.user!.id;
   }
 
-  return redirect(`/${newUser.id}`);
+  return redirect(`/${redirectUserId}`);
 }
