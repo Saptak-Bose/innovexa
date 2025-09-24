@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import SparklesCore from "./sparkles";
 import { ReactNode } from "react";
 
-export default function Lamp() {
+export default function Lamp({title}: {title: ReactNode}) {
   return (
     <LampContainer>
       <motion.h1
@@ -18,8 +18,7 @@ export default function Lamp() {
         }}
         className="mt-20 bg-gradient-to-br from-secondary-foreground to-border py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
       >
-        Plans That
-        <br /> Fit You Best
+        {title}
       </motion.h1>
     </LampContainer>
   );

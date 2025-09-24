@@ -55,7 +55,14 @@ export default async function LandingPage({}: Props) {
         <HeroParallax products={products} />
       </section>
       <section id="pricing" className="mt-[-500px] mb-20">
-        <Lamp />
+        <Lamp
+          title={
+            <>
+              Plans That
+              <br /> Fit You Best
+            </>
+          }
+        />
         <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 -mt-72">
           {plans.map(({ description, features, price, title, imp }, i) => (
             <CardContainer key={i} className="inter-var">

@@ -17,8 +17,20 @@ import Loader from "@/components/global/loader";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
+import { Metadata } from "next";
 
 type Props = object;
+
+export const metadata: Metadata = {
+  title: "Sign In — Inno𝒱exa",
+  description:
+    "Inno𝒱exa — Sign in to access saved MarX profiles, customize builds, and manage membership.",
+  openGraph: {
+    title: "Sign In • Inno𝒱exa",
+    description:
+      "Sign in to access saved MarX profiles, customize builds, and manage membership.",
+  },
+};
 
 export default function SignInPage({}: Props) {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -104,7 +116,7 @@ export default function SignInPage({}: Props) {
       {verifying ? (
         <GlobalCard
           title="Enter Your Verification Code"
-          description="For added security, we’ve sent a one-time 6-digit code to your email. Please input it below to complete your sign-in. This ensures it’s really you and protects your Innovexa account. Can’t find the code? Check your spam folder. Once verified, you’ll be instantly signed in and ready to customize your Macropad!"
+          description="For quick, secure access we’ve sent a one-time 6-digit sign-in code to your email — enter it now to authenticate without a password (the code expires in 10 minutes) — if you didn’t request this, cancel and contact support."
         >
           <form onSubmit={handleVerification}>
             <Label
@@ -126,8 +138,8 @@ export default function SignInPage({}: Props) {
         </GlobalCard>
       ) : (
         <GlobalCard
-          title="Welcome Back to Innovexa"
-          description="Sign in to your Innovexa account to pick up right where you left off. Access your saved Macropad configurations, manage subscriptions, and explore new customization options. Enter your email or sign in via Google or Apple for instant access. Let’s get you back to creating the perfect layout!"
+          title="Welcome Back to Inno𝒱exa"
+          description="Welcome back — sign in to access your saved MarX profiles, continue custom builds, manage orders and memberships, and pick up where you left off; opt for a secure one-time email code for passwordless sign-in for faster access on trusted devices."
         >
           <form onSubmit={handleSubmit}>
             <Label
@@ -186,7 +198,7 @@ export default function SignInPage({}: Props) {
             <Separator />
           </div>
           <span className="flex items-center justify-center text-muted-foreground text-sm">
-            New to Innovexa?
+            New to Inno𝒱exa?
             <Link
               className="ml-0.5 text-xs hover:underline text-secondary-foreground font-semibold"
               href="/auth/sign-up"

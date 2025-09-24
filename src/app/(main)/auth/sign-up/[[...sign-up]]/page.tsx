@@ -13,8 +13,20 @@ import { OAuthStrategy } from "@clerk/types";
 import Image from "next/image";
 import Link from "next/link";
 import OtpInput from "@/components/global/otp-input";
+import { Metadata } from "next";
 
 type Props = object;
+
+export const metadata: Metadata = {
+  title: "Sign Up — Inno𝒱exa",
+  description:
+    "Inno𝒱exa — Create an account to customize MarX, save profiles and join early access.",
+  openGraph: {
+    title: "Sign Up • Inno𝒱exa",
+    description:
+      "Create an account to customize MarX, save profiles and join early access.",
+  },
+};
 
 export default function SignUpPage({}: Props) {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -85,8 +97,8 @@ export default function SignUpPage({}: Props) {
     <main className="flex items-center justify-center min-h-screen w-full">
       {verifying ? (
         <GlobalCard
-          title="Verify Your Email to Secure Your Innovexa Account"
-          description="We’ve just emailed you a 6-digit verification code. Enter it below to confirm your address and finalize your Innovexa registration. This step ensures your account is protected and lets us send you order updates, exclusive offers, and firmware notifications. Didn’t receive the code? Check your spam folder."
+          title="Verify Your Email to Secure Your Inno𝒱exa Account"
+          description="We’ve emailed a one-time 6-digit code to the address you provided — enter it here to confirm your email and complete account creation; this step secures your Inno𝒱exa account so you can immediately save profiles, access preorder perks and keep your Marx builds safe. (Didn’t get it? Check spam.)"
         >
           <form onSubmit={handleVerification}>
             <Label
@@ -108,8 +120,8 @@ export default function SignUpPage({}: Props) {
         </GlobalCard>
       ) : (
         <GlobalCard
-          title="Get Started with InnoVexa"
-          description="Create your free account to instantly access our intuitive Macropads, exclusive member-only Macropad Customizer, exclusive deals and 24/7 priority support. From selecting your perfect switch type to designing a one-of-a-kind key layout, Innovexa makes every step effortless. Sign up now and be first in line for new releases, firmware updates, and community events—your ultimate Macropad awaits."
+          title="Get Started with Inno𝒱exa"
+          description="Create your Inno𝒱exa account to unlock the full MarX experience — save and sync custom layouts to the cloud, preview and build MarX configurations, join early-access drops and firmware betas, and get member perks; it only takes a minute to sign up, verify your email, and start designing one-press workflows that speed up your work."
         >
           <form onSubmit={handleSubmit}>
             <Label
@@ -168,7 +180,7 @@ export default function SignUpPage({}: Props) {
             <Separator />
           </div>
           <span className="flex items-center justify-center text-muted-foreground text-sm">
-            Already have an account at Innovexa?
+            Already have an account at Inno𝒱exa?
             <Link
               className="ml-0.5 text-xs hover:underline text-secondary-foreground font-semibold"
               href="/auth/sign-in"

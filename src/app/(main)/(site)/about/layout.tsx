@@ -2,13 +2,13 @@ import { Metadata } from "next";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "About — Innovexa",
+  title: "About — Inno𝒱exa",
   description:
-    "Innovexa — handcrafted Macropads and software for creators. Meet the team, our mission and the story behind our studio-grade hardware.",
+    "Inno𝒱exa — handcrafted Macropads and software for creators. Meet the team, our mission and the story behind our studio-grade hardware.",
   openGraph: {
-    title: "About • Innovexa",
+    title: "About • Inno𝒱exa",
     description:
-      "Handcrafted Macropads and software for creators. Meet Innovexa.",
+      "Handcrafted Macropads and software for creators. Meet Inno𝒱exa.",
   },
 };
 

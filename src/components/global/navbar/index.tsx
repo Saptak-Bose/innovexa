@@ -1,9 +1,10 @@
 import { getUser } from "@/actions/user";
 import { Button } from "@/components/ui/button";
+import { navTabs } from "@/lib/constants";
 import { UserButton } from "@clerk/nextjs";
 import { MenuIcon } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import ALink from "../active-link";
 
 type Props = object;
 
@@ -13,33 +14,15 @@ export default async function Navbar({}: Props) {
   return (
     <header className="fixed top-0 right-0 left-0 p-4 bg-black/40 backdrop-blur-lg z-[100] flex items-center border-b border-border justify-between">
       <aside className="flex items-center gap-[2px]">
-        <p className="text-3xl font-bold">Inno</p>
-        <Image
-          src="/vlogo-white.svg"
-          width={35}
-          height={35}
-          className="shadow-sm"
-          alt="V-logo"
-        />
-        <p className="text-3xl font-bold">exa</p>
+        <p className="text-3xl font-bold">Inno𝒱exa</p>
       </aside>
       <nav className="absolute left-[50%] top-[50%] transform translate-x-[-50%] translate-y-[-50%] hidden md:block">
         <ul className="flex items-center gap-4 list-none">
-          <li className="hover:underline hover:underline-offset-2 transition-all transform ease-in-out duration-300 hover:font-bold hover:text-primary text-secondary-foreground font-semibold">
-            <Link href="/products">Products</Link>
-          </li>
-          <li className="hover:underline hover:underline-offset-2 transition-all transform ease-in-out duration-300 hover:font-bold hover:text-primary text-secondary-foreground font-semibold">
-            <Link href="/#pricing">Pricing</Link>
-          </li>
-          <li className="hover:underline hover:underline-offset-2 transition-all transform ease-in-out duration-300 hover:font-bold hover:text-primary text-secondary-foreground font-semibold">
-            <Link href="/about">About</Link>
-          </li>
-          <li className="hover:underline hover:underline-offset-2 transition-all transform ease-in-out duration-300 hover:font-bold hover:text-primary text-secondary-foreground font-semibold">
-            <Link href="/privacy">Privacy Policy</Link>
-          </li>
-          <li className="hover:underline hover:underline-offset-2 transition-all transform ease-in-out duration-300 hover:font-bold hover:text-primary text-secondary-foreground font-semibold">
-            <Link href="/enterprise">IP-Enterprise</Link>
-          </li>
+          {navTabs.map(({ href, tab }, i) => (
+            <li key={i}>
+              <ALink href={href}>{tab}</ALink>
+            </li>
+          ))}
         </ul>
       </nav>
       <aside className="flex items-center gap-4">

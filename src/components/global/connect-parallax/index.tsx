@@ -109,7 +109,7 @@ export const Header = () => {
       <h1 className="text-2xl md:text-7xl font-bold text-secondary-foreground">
         MarX — <br /> One Tap. Infinite Workflows.
       </h1>
-      <p className="max-w-2xl text-base md:text-xl mt-8 dark:text-neutral-200">
+      <p className="max-w-2xl text-base md:text-xl mt-8 text-neutral-200">
         Imagine compressing an hour of tedious, repetitive clicks into a single
         tap. MarX makes that possible. As Innovexa’s flagship Macropad, MarX
         pairs studio-grade mechanical switches with hot-swappable sockets and

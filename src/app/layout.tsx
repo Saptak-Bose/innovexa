@@ -13,11 +13,11 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Innovexa — Make Time Tap",
+  title: "Inno𝒱exa — Make Time Tap",
   description:
     "Studio-grade Macropads + smart software. Automate tasks into one satisfying press — pro switches, cloud profiles, and rapid customization.",
   openGraph: {
-    title: "Innovexa — Make Time Tap",
+    title: "Inno𝒱exa — Make Time Tap",
     description:
       "Studio-grade Macropads + smart software. Automate tasks into one satisfying press.",
   },
@@ -36,7 +36,7 @@ export default function RootLayout({
     >
       <html lang="en" suppressHydrationWarning>
         <head>
-          <meta name="apple-mobile-web-app-title" content="InnoVexa" />
+          <meta name="apple-mobile-web-app-title" content="Inno𝒱exa" />
         </head>
         <body
           className={`${dmSans.className} antialiased`}
