@@ -13,20 +13,8 @@ import { OAuthStrategy } from "@clerk/types";
 import Image from "next/image";
 import Link from "next/link";
 import OtpInput from "@/components/global/otp-input";
-import { Metadata } from "next";
 
 type Props = object;
-
-export const metadata: Metadata = {
-  title: "Sign Up — Inno𝒱exa",
-  description:
-    "Inno𝒱exa — Create an account to customize MarX, save profiles and join early access.",
-  openGraph: {
-    title: "Sign Up • Inno𝒱exa",
-    description:
-      "Create an account to customize MarX, save profiles and join early access.",
-  },
-};
 
 export default function SignUpPage({}: Props) {
   const { isLoaded, signUp, setActive } = useSignUp();

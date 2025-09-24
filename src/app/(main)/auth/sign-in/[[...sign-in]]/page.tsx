@@ -17,20 +17,8 @@ import Loader from "@/components/global/loader";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
-import { Metadata } from "next";
 
 type Props = object;
-
-export const metadata: Metadata = {
-  title: "Sign In — Inno𝒱exa",
-  description:
-    "Inno𝒱exa — Sign in to access saved MarX profiles, customize builds, and manage membership.",
-  openGraph: {
-    title: "Sign In • Inno𝒱exa",
-    description:
-      "Sign in to access saved MarX profiles, customize builds, and manage membership.",
-  },
-};
 
 export default function SignInPage({}: Props) {
   const { isLoaded, signIn, setActive } = useSignIn();
